@@ -7,5 +7,6 @@
     <string name="new_game_hard">New Hard Game\n7x7</string>
 	<string name="exit">Exit</string>
 	<string name="new_game">New Game</string>
+	<string name="win">You won! A new game is starting.</string>
     
 </resources>

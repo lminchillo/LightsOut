@@ -1,7 +1,9 @@
 package lais.lightsout;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -145,26 +147,29 @@ public class GameActivity extends Activity
 	
 	private void checkWin()
 	{
-		if(remaining==0){
-			Log.d("Game","win");
-		}
-		/*boolean win = true;
-		for (int i=0; i<size; i++)
-		{
-			for (int j=0; j<size; j++)
-			{
-				if (lights[i][j])
-				{
-					win = false;
-					break;
-				}
-			}
-		}
-		
-		if (win)
+		if(remaining==0)
 		{
 			Log.d("Game","win");
-		}*/
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(getResources().getString(R.string.win))
+			       .setCancelable(false)
+			       .setPositiveButton("OK", new DialogInterface.OnClickListener()
+			       {
+			           public void onClick(DialogInterface dialog, int id)
+			           {
+							Intent intent = new Intent(getApplicationContext(),GameActivity.class);
+							intent.putExtra("SIZE",size);
+							intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+							startActivity(intent);
+							finish();
+							overridePendingTransition(0, 0);
+			           }
+			       });
+			AlertDialog alert = builder.create();
+			alert.show();
+			
+		}
 	}
 	
 	class LightAdapter extends ArrayAdapter<Boolean>
