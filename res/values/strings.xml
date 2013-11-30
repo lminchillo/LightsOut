@@ -5,5 +5,7 @@
     <string name="new_game_easy">New Easy Game\n3x3</string>
     <string name="new_game_medium">New Medium Game\n5x5</string>
     <string name="new_game_hard">New Hard Game\n7x7</string>
-
+	<string name="exit">Exit</string>
+	<string name="new_game">New Game</string>
+    
 </resources>
