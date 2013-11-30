@@ -2,8 +2,8 @@
 <resources>
 
     <string name="app_name">Lights Out</string>
-    <string name="new_game_easy">New Easy Game\n5x5</string>
-    <string name="new_game_medium">New Medium Game\n7x7</string>
-    <string name="new_game_hard">New Hard Game\n9x9</string>
+    <string name="new_game_easy">New Easy Game\n3x3</string>
+    <string name="new_game_medium">New Medium Game\n5x5</string>
+    <string name="new_game_hard">New Hard Game\n7x7</string>
 
 </resources>

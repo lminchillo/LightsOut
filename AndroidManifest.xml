@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="lais.lightsout.GameEasyActivity"
+            android:name="lais.lightsout.GameActivity"
             android:screenOrientation="portrait" >
         </activity>
     </application>

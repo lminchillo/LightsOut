@@ -2,28 +2,38 @@ package lais.lightsout;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-public class GameEasyActivity extends Activity
+public class GameActivity extends Activity
 {
 	private int size = 5;
 	private GridView gridView;
 	private boolean[][] lights;
  
 	@Override
+	public void onBackPressed()
+	{
+		super.onBackPressed();
+		overridePendingTransition(0, 0);
+	}
+	
+	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_game_easy);
+		setContentView(R.layout.activity_game);
 		
 		Bundle extras = getIntent().getExtras();
 		if (extras != null)
@@ -36,6 +46,9 @@ public class GameEasyActivity extends Activity
 	
 	private void initialize()
 	{
+		TextView title = (TextView) findViewById(R.id.game_title);
+		title.setTypeface(Typeface.createFromAsset(getAssets(), "Existence-Light.ttf"),Typeface.BOLD);
+		
 		lights = new boolean[size][size];
 		for (int i=0; i<size; i++)
 		{
@@ -45,8 +58,18 @@ public class GameEasyActivity extends Activity
 			}
 		}
 		
-		gridView = (GridView) findViewById(R.id.game_easy_gridview);
+		gridView = (GridView) findViewById(R.id.game_gridview);
+		
+		// Adjust the gridview size
+		LayoutParams lp = gridView.getLayoutParams();
+		final float scale = getResources().getDisplayMetrics().density;
+		int layoutSize = (int) (50*size * scale + 0.5f);
+		lp.width = layoutSize;
+		lp.height = layoutSize;
+		gridView.setLayoutParams(lp);
 		gridView.setNumColumns(size);
+		
+		
 		final LightAdapter adapter = new LightAdapter(getApplicationContext(), R.layout.gridview_item);
 		
 		gridView.setAdapter(adapter);
@@ -75,9 +98,9 @@ public class GameEasyActivity extends Activity
 	private void checkWin()
 	{
 		boolean win = true;
-		for (int i=0; i<5; i++)
+		for (int i=0; i<size; i++)
 		{
-			for (int j=0; j<5; j++)
+			for (int j=0; j<size; j++)
 			{
 				if (lights[i][j])
 				{
@@ -108,7 +131,7 @@ public class GameEasyActivity extends Activity
 		@Override
 		public int getCount()
 		{
-			return 25;
+			return size*size;
 		}
 		
 		@Override
@@ -120,7 +143,7 @@ public class GameEasyActivity extends Activity
 			}
 			ImageView img = (ImageView) convertView.findViewById(R.id.gridview_item_img);
 			
-			int j = position%5, i = (position-j)/5;
+			int j = position%size, i = (position-j)/size;
 			if (lights[i][j])
 			{
 				img.setImageDrawable(getResources().getDrawable(R.drawable.button_on));
