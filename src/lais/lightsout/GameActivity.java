@@ -21,6 +21,7 @@ public class GameActivity extends Activity
 	private int size = 5;
 	private GridView gridView;
 	private boolean[][] lights;
+	private int remaining = 0;
  
 	@Override
 	public void onBackPressed()
@@ -50,11 +51,15 @@ public class GameActivity extends Activity
 		title.setTypeface(Typeface.createFromAsset(getAssets(), "Existence-Light.ttf"),Typeface.BOLD);
 		
 		lights = new boolean[size][size];
+		remaining = 0;
 		for (int i=0; i<size; i++)
 		{
 			for (int j=0; j<size; j++)
 			{
 				lights[i][j] = Math.random()>0.5;
+				if(lights[i][j]){
+					remaining++;
+				}
 			}
 		}
 		
@@ -83,11 +88,11 @@ public class GameActivity extends Activity
 				
 				int j = position%size, i = (position-j)/size;
 				
-				lights[i][j] = !lights[i][j];
-				if (i>0)		lights[i-1][j] = !lights[i-1][j];
-				if (i<size-1)	lights[i+1][j] = !lights[i+1][j];
-				if (j>0)		lights[i][j-1] = !lights[i][j-1];
-				if (j<size-1)	lights[i][j+1] = !lights[i][j+1];
+				lights[i][j] = !lights[i][j]; if(lights[i][j]){remaining++;}else{remaining--;};
+				if (i>0){		lights[i-1][j] = !lights[i-1][j]; if(lights[i-1][j]){remaining++;}else{remaining--;}};
+				if (i<size-1){	lights[i+1][j] = !lights[i+1][j]; if(lights[i+1][j]){remaining++;}else{remaining--;}};
+				if (j>0){		lights[i][j-1] = !lights[i][j-1]; if(lights[i][j-1]){remaining++;}else{remaining--;}};
+				if (j<size-1){	lights[i][j+1] = !lights[i][j+1]; if(lights[i][j+1]){remaining++;}else{remaining--;}};
 				
 				adapter.notifyDataSetChanged();
 				checkWin();
@@ -97,7 +102,10 @@ public class GameActivity extends Activity
 	
 	private void checkWin()
 	{
-		boolean win = true;
+		if(remaining==0){
+			Log.d("Game","win");
+		}
+		/*boolean win = true;
 		for (int i=0; i<size; i++)
 		{
 			for (int j=0; j<size; j++)
@@ -113,7 +121,7 @@ public class GameActivity extends Activity
 		if (win)
 		{
 			Log.d("Game","win");
-		}
+		}*/
 	}
 	
 	class LightAdapter extends ArrayAdapter<Boolean>
