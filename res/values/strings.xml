@@ -2,11 +2,8 @@
 <resources>
 
     <string name="app_name">Lights Out</string>
-    <string name="new_game_easy">Easy\n5x5</string>
-    <string name="new_game_medium">Medium\n7x7</string>
-    <string name="new_game_hard">Hard\n9x9</string>
-    <string name="title_activity_game_easy">GameEasyActivity</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="new_game_easy">New Easy Game\n5x5</string>
+    <string name="new_game_medium">New Medium Game\n7x7</string>
+    <string name="new_game_hard">New Hard Game\n9x9</string>
 
 </resources>
