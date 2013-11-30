@@ -31,7 +31,7 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginTop="60dp"
-        android:text="Easy" />
+        android:text="@string/new_game_easy" />
     
     <Button
         android:id="@+id/main_medium"
@@ -42,7 +42,7 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginTop="60dp"
-        android:text="Medium" />
+        android:text="@string/new_game_medium" />
     
     <Button
         android:id="@+id/main_hard"
@@ -53,6 +53,6 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginTop="60dp"
-        android:text="Hard" />
+        android:text="@string/new_game_hard" />
 	    
 </RelativeLayout>
