@@ -3,11 +3,10 @@ package lais.lightsout;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -16,8 +15,9 @@ import android.widget.ImageView;
 
 public class GameEasyActivity extends Activity
 {
+	private int size = 5;
 	private GridView gridView;
-	private boolean[][] lights = new boolean[5][5];
+	private boolean[][] lights;
  
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -25,22 +25,29 @@ public class GameEasyActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_easy);
 		
+		Bundle extras = getIntent().getExtras();
+		if (extras != null)
+		{
+			size = extras.getInt("SIZE",5);
+		}
+		
 		initialize();
 	}
 	
 	private void initialize()
 	{
-		for (int i=0; i<5; i++)
+		lights = new boolean[size][size];
+		for (int i=0; i<size; i++)
 		{
-			for (int j=0; j<5; j++)
+			for (int j=0; j<size; j++)
 			{
 				lights[i][j] = Math.random()>0.5;
 			}
 		}
 		
-		gridView = (GridView) findViewById(R.id.gridView1);
-		
-		LightAdapter adapter = new LightAdapter(getApplicationContext(), 0);
+		gridView = (GridView) findViewById(R.id.game_easy_gridview);
+		gridView.setNumColumns(size);
+		final LightAdapter adapter = new LightAdapter(getApplicationContext(), R.layout.gridview_item);
 		
 		gridView.setAdapter(adapter);
 		
@@ -51,31 +58,51 @@ public class GameEasyActivity extends Activity
 			{
 				Log.d("Game","onItemClick");
 				
-				int j = position%5, i = (position-j)/5;
+				int j = position%size, i = (position-j)/size;
 				
-				ImageView b = (ImageView) view;
-				
-				if (lights[i][j])
-				{
-					b.setImageDrawable(getResources().getDrawable(R.drawable.button_off));
-				}
-				else
-				{
-					b.setImageDrawable(getResources().getDrawable(R.drawable.button_on));
-				}
 				lights[i][j] = !lights[i][j];
+				if (i>0)		lights[i-1][j] = !lights[i-1][j];
+				if (i<size-1)	lights[i+1][j] = !lights[i+1][j];
+				if (j>0)		lights[i][j-1] = !lights[i][j-1];
+				if (j<size-1)	lights[i][j+1] = !lights[i][j+1];
+				
+				adapter.notifyDataSetChanged();
+				checkWin();
 			}
 		});
+	}
+	
+	private void checkWin()
+	{
+		boolean win = true;
+		for (int i=0; i<5; i++)
+		{
+			for (int j=0; j<5; j++)
+			{
+				if (lights[i][j])
+				{
+					win = false;
+					break;
+				}
+			}
+		}
+		
+		if (win)
+		{
+			Log.d("Game","win");
+		}
 	}
 	
 	class LightAdapter extends ArrayAdapter<Boolean>
 	{
 		Context ctx;
+		int resourceId;
 		
 		public LightAdapter(Context context, int resource)
 		{
 			super(context, resource);
 			ctx = context;
+			resourceId = resource;
 		}
 		
 		@Override
@@ -89,10 +116,9 @@ public class GameEasyActivity extends Activity
 		{
 			if (convertView == null)
 			{
-				convertView = new ImageView(ctx);
-				//convertView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+				convertView = LayoutInflater.from(ctx).inflate(resourceId,null);
 			}
-			ImageView img = (ImageView) convertView;
+			ImageView img = (ImageView) convertView.findViewById(R.id.gridview_item_img);
 			
 			int j = position%5, i = (position-j)/5;
 			if (lights[i][j])
